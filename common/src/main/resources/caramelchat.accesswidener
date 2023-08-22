@@ -1,0 +1,42 @@
+accessWidener v1 named
+
+accessible field net/minecraft/client/gui/components/EditBox font Lnet/minecraft/client/gui/Font;
+accessible field net/minecraft/client/gui/components/EditBox value Ljava/lang/String;
+accessible field net/minecraft/client/gui/components/EditBox maxLength I
+accessible field net/minecraft/client/gui/components/EditBox bordered Z
+accessible field net/minecraft/client/gui/components/EditBox cursorPos I
+accessible field net/minecraft/client/gui/components/EditBox highlightPos I
+
+accessible field net/minecraft/client/gui/font/TextFieldHelper stringValidator Ljava/util/function/Predicate;
+
+accessible method net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen setMessage (Ljava/lang/String;)V
+accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen line I
+accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen sign Lnet/minecraft/world/level/block/entity/SignBlockEntity;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen messages [Ljava/lang/String;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen signField Lnet/minecraft/client/gui/font/TextFieldHelper;
+
+accessible method net/minecraft/client/gui/screens/inventory/BookEditScreen setCurrentPageText (Ljava/lang/String;)V
+accessible method net/minecraft/client/gui/screens/inventory/BookEditScreen getCurrentPageText ()Ljava/lang/String;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen TEXT_WIDTH I
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen title Ljava/lang/String;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen isSigning Z
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen pageEdit Lnet/minecraft/client/gui/font/TextFieldHelper;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen titleEdit Lnet/minecraft/client/gui/font/TextFieldHelper;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen finalizeButton Lnet/minecraft/client/gui/components/Button;
+accessible class net/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache cursor Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache cursorAtEnd Z
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache lineStarts [I
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache lines [Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$LineInfo;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache selection [Lnet/minecraft/client/renderer/Rect2i;
+accessible class net/minecraft/client/gui/screens/inventory/BookEditScreen$LineInfo
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$LineInfo contents Ljava/lang/String;
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$LineInfo x I
+accessible field net/minecraft/client/gui/screens/inventory/BookEditScreen$LineInfo y I
+accessible class net/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i
+
+accessible method net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen refreshSearchResults ()V
+
+accessible field net/minecraft/client/gui/screens/Screen font Lnet/minecraft/client/gui/Font;
+
+accessible method net/minecraft/client/KeyboardHandler charTyped (JII)V
