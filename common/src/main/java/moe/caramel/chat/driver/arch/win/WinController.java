@@ -1,6 +1,7 @@
 package moe.caramel.chat.driver.arch.win;
 
 import com.sun.jna.Native;
+import moe.caramel.chat.Main;
 import moe.caramel.chat.controller.ScreenController;
 import moe.caramel.chat.driver.IController;
 import moe.caramel.chat.driver.IOperator;
@@ -24,7 +25,7 @@ public final class WinController implements IController {
      */
     public WinController() {
         ModLogger.log("[Native] Load the Windows Controller.");
-        this.driver = Native.load(IController.getNativeName("libwincocoainput.dll"), Driver_Win.class);
+        this.driver = Native.load(Main.copyLibrary("libwincocoainput.dll"), Driver_Win.class);
         this.driver.initialize(
             // Window Id
             GLFWNativeWin32.glfwGetWin32Window(Minecraft.getInstance().getWindow().getWindow()),

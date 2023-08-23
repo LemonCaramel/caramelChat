@@ -1,6 +1,7 @@
 package moe.caramel.chat.driver.arch.darwin;
 
 import com.sun.jna.Native;
+import moe.caramel.chat.Main;
 import moe.caramel.chat.controller.ScreenController;
 import moe.caramel.chat.driver.IController;
 import moe.caramel.chat.driver.IOperator;
@@ -20,7 +21,7 @@ public final class DarwinController implements IController {
      */
     public DarwinController() {
         ModLogger.log("[Native] Load the Darwin Controller.");
-        this.driver = Native.load(IController.getNativeName("libdarwincocoainput.dylib"), Driver_Darwin.class);
+        this.driver = Native.load(Main.copyLibrary("libdarwincocoainput.dylib"), Driver_Darwin.class);
         this.driver.initialize(
             // Info
             (log) -> ModLogger.debug("[Native|C] " + log), // lib issue (info -> debug)

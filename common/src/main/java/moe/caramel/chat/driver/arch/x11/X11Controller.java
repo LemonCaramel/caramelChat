@@ -2,6 +2,7 @@ package moe.caramel.chat.driver.arch.x11;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import moe.caramel.chat.Main;
 import moe.caramel.chat.controller.ScreenController;
 import moe.caramel.chat.driver.IController;
 import moe.caramel.chat.driver.IOperator;
@@ -29,7 +30,7 @@ public final class X11Controller implements IController {
         X11Controller.setupKeyboardEvent();
 
         ModLogger.log("[Native] Load the X11 Controller.");
-        this.driver = Native.load(IController.getNativeName("libx11cocoainput.so"), Driver_X11.class);
+        this.driver = Native.load(Main.copyLibrary("libx11cocoainput.so"), Driver_X11.class);
 
         final long windowId = Minecraft.getInstance().getWindow().getWindow();
         this.driver.initialize(

@@ -1,7 +1,6 @@
 package moe.caramel.chat.driver;
 
 import com.sun.jna.Platform;
-import moe.caramel.chat.Main;
 import moe.caramel.chat.driver.arch.darwin.DarwinController;
 import moe.caramel.chat.driver.arch.unknown.UnknownController;
 import moe.caramel.chat.driver.arch.win.WinController;
@@ -36,17 +35,6 @@ public interface IController {
      * @param focus focus
      */
     void setFocus(final boolean focus);
-
-    /**
-     * Gets the name of the native library.
-     *
-     * @param name real name
-     * @return current temp name
-     */
-    static String getNativeName(final String name) {
-        final String fullName = Main.copyLibrary(name).getName();
-        return fullName.substring(0, fullName.lastIndexOf('.'));
-    }
 
     /**
      * Gets the controller.

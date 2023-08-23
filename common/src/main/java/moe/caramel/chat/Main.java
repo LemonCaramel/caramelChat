@@ -65,9 +65,9 @@ public final class Main {
      * Copy the library to a temp directory.
      *
      * @param name library name
-     * @return copied library
+     * @return copied library path
      */
-    public static File copyLibrary(final String name) {
+    public static String copyLibrary(final String name) {
         try {
             final URL url = Main.class.getClassLoader().getResource("native/" + name);
             if (url == null) {
@@ -84,10 +84,9 @@ public final class Main {
                 lib.deleteOnExit();
             }
 
-            System.load(lib.getAbsolutePath());
             ModLogger.log("CocoaInput Driver has copied library to native directory.");
 
-            return lib;
+            return lib.getAbsolutePath();
         } catch (final Exception exception) {
             ModLogger.error("An error occurred while loading the library.");
             throw new RuntimeException(exception);
