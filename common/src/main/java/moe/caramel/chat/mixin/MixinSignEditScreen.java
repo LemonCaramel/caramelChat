@@ -64,13 +64,13 @@ public final class MixinSignEditScreen implements ScreenController {
         method = "renderSignText",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
+            target = "Lnet/minecraft/client/gui/Font;drawInBatch(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/gui/Font$DisplayMode;IIZ)I",
             ordinal = 0
         )
     )
     private void renderCaret(final Args args) {
         // Check IME Status
-        final String original = args.get(1);
+        final String original = args.get(0);
         if (original.isEmpty() || caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
             return;
         }
@@ -78,7 +78,7 @@ public final class MixinSignEditScreen implements ScreenController {
         // Line Check (stupid way...)
         final int lineHeight = this.sign.getTextLineHeight();
         final int centerHeight = (4 * lineHeight / 2);
-        final int line = (((int) args.get(3) + centerHeight) / lineHeight);
+        final int line = (((int) (float) args.get(2) + centerHeight) / lineHeight);
         if (line != this.line) {
             return;
         }
@@ -90,6 +90,6 @@ public final class MixinSignEditScreen implements ScreenController {
         final String first = original.substring(0, firstEndPos);
         final String input = original.substring(firstEndPos, secondStartPos);
         final String second = original.substring(secondStartPos);
-        args.set(1, first + ChatFormatting.UNDERLINE + input + ChatFormatting.RESET + second); // OMG..
+        args.set(0, first + ChatFormatting.UNDERLINE + input + ChatFormatting.RESET + second); // OMG..
     }
 }

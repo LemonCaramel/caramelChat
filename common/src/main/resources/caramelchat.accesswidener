@@ -9,7 +9,6 @@ accessible field net/minecraft/client/gui/components/EditBox highlightPos I
 
 accessible field net/minecraft/client/gui/font/TextFieldHelper stringValidator Ljava/util/function/Predicate;
 
-accessible method net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen setMessage (Ljava/lang/String;)V
 accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen line I
 accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen sign Lnet/minecraft/world/level/block/entity/SignBlockEntity;
 accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen messages [Ljava/lang/String;

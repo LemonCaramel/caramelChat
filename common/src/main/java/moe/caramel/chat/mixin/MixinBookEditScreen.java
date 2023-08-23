@@ -1,10 +1,10 @@
 package moe.caramel.chat.mixin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import moe.caramel.chat.controller.ScreenController;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
 import moe.caramel.chat.wrapper.WrapperBookEditScreen;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.Screen;
@@ -32,8 +32,8 @@ import java.util.function.Consumer;
 @Mixin(BookEditScreen.class)
 public abstract class MixinBookEditScreen extends Screen implements ScreenController {
 
-    @Shadow protected abstract void renderHighlight(final GuiGraphics helper, final Rect2i[] selection);
-    @Shadow protected abstract void renderCursor(final GuiGraphics helper, final BookEditScreen.Pos2i pos, final boolean atEnd);
+    @Shadow protected abstract void renderHighlight(final PoseStack stack, final Rect2i[] selection);
+    @Shadow protected abstract void renderCursor(final PoseStack stack, final BookEditScreen.Pos2i pos, final boolean atEnd);
     @Shadow protected abstract BookEditScreen.DisplayCache getDisplayCache();
 
     @Shadow public String title;
@@ -147,7 +147,7 @@ public abstract class MixinBookEditScreen extends Screen implements ScreenContro
             target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;getDisplayCache()Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$DisplayCache;"
         ), cancellable = true
     )
-    private void rewriteDrawPage(final GuiGraphics helper, final int mouseX, final int mouseY, final float delta, final CallbackInfo ci) {
+    private void rewriteDrawPage(final PoseStack stack, final int mouseX, final int mouseY, final float delta, final CallbackInfo ci) {
         // Check IME Status
         if (caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
             return;
@@ -167,7 +167,7 @@ public abstract class MixinBookEditScreen extends Screen implements ScreenContro
             final int lineStartPos = (cache.lineStarts[line]);
             final int lineEndPos = (lineStartPos + info.contents.length());
             if (info.contents.isEmpty() || lineEndPos < caramelChat$wrapper.getFirstEndPos() || caramelChat$wrapper.getSecondStartPos() <= lineStartPos) {
-                helper.drawString(this.font, info.contents, info.x, info.y, color, false);
+                this.font.draw(stack, info.contents, info.x, info.y, color);
                 continue;
             }
 
@@ -181,15 +181,15 @@ public abstract class MixinBookEditScreen extends Screen implements ScreenContro
             final String input = info.contents.substring(firstEndPos, secondStartPos);
             final String second = info.contents.substring(secondStartPos);
 
-            helper.drawString(this.font,
+            this.font.draw(stack,
                 Component.literal(first).append(Component.literal(input).withStyle(ChatFormatting.UNDERLINE)).append(second),
-                info.x, info.y, color, false
+                info.x, info.y, color
             );
         }
 
         // Run cancelled task
-        this.renderHighlight(helper, cache.selection);
-        this.renderCursor(helper, cache.cursor, cache.cursorAtEnd);
-        super.render(helper, mouseX, mouseY, delta);
+        this.renderHighlight(stack, cache.selection);
+        this.renderCursor(stack, cache.cursor, cache.cursorAtEnd);
+        super.render(stack, mouseX, mouseY, delta);
     }
 }

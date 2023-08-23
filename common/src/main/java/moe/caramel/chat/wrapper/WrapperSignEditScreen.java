@@ -19,35 +19,21 @@ public final class WrapperSignEditScreen extends AbstractIMEWrapper {
 
     @Override
     protected void insert(final String text) {
-        if (this.wrapped.signField != null) {
-            this.wrapped.signField.insertText(text);
-        }
+        this.wrapped.signField.insertText(text);
     }
 
     @Override
     protected int getCursorPos() {
-        if (this.wrapped.signField == null) {
-            return 0;
-        }
-
         return wrapped.signField.getCursorPos();
     }
 
     @Override
     protected int getHighlightPos() {
-        if (this.wrapped.signField == null) {
-            return 0;
-        }
-
         return wrapped.signField.getSelectionPos();
     }
 
     @Override
     public boolean blockTyping() {
-        if (this.wrapped.signField == null) {
-            return true;
-        }
-
         return !wrapped.signField.stringValidator.test(this.origin + "A");
     }
 
@@ -58,17 +44,11 @@ public final class WrapperSignEditScreen extends AbstractIMEWrapper {
 
     @Override
     protected void setPreviewText(final String text) {
-        this.wrapped.setMessage(text);
         this.wrapped.messages[wrapped.line] = text;
     }
 
     @Override
     public Rect getRect() {
-        /* What? */
-        if (wrapped.signField == null) {
-            return Rect.EMPTY;
-        }
-
         /* Calc Position */
         final int xWidth = wrapped.font.width(this.getTextWithPreview().substring(0, wrapped.signField.getCursorPos()));
         final float x = ( (wrapped.width / 2.0f) + (xWidth / 2.0f) );
