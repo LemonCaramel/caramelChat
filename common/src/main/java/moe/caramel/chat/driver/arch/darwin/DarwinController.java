@@ -24,7 +24,7 @@ public final class DarwinController implements IController {
         this.driver = Native.load(Main.copyLibrary("libdarwincocoainput.dylib"), Driver_Darwin.class);
         this.driver.initialize(
             // Info
-            (log) -> ModLogger.debug("[Native|C] " + log), // lib issue (info -> debug)
+            (log) -> ModLogger.log("[Native|C] " + log),
             // Error
             (log) -> ModLogger.error("[Native|C] " + log),
             // Debug

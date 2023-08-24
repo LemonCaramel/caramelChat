@@ -60,7 +60,7 @@ public final class WinController implements IController {
                 return 1;
             },
             // Info
-            (log) -> ModLogger.debug("[Native|C] " + log), // lib issue (info -> debug)
+            (log) -> ModLogger.log("[Native|C] " + log),
             // Error
             (log) -> ModLogger.error("[Native|C] " + log),
             // Debug
