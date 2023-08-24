@@ -95,8 +95,8 @@ public abstract class MixinEditBox implements EditBoxController {
 
     // ================================ (IME)
 
-    @Inject(method = "setValue", at = @At("HEAD"))
-    private void setValueHead(final String text, final CallbackInfo ci) {
+    @Inject(method = { "setValue", "insertText" }, at = @At("HEAD"))
+    private void updateTextHead(final String text, final CallbackInfo ci) {
         // setStatusToNone -> forceUpdateOrigin -> onValueChange
         this.caramelChat$setStatusToNone();
     }
@@ -110,12 +110,6 @@ public abstract class MixinEditBox implements EditBoxController {
     )
     private void setValueInvoke(final String text, final CallbackInfo ci) {
         this.caramelChat$forceUpdateOrigin();
-    }
-
-    @Inject(method = "insertText", at = @At("HEAD"))
-    private void insertTextHead(final String text, final CallbackInfo ci) {
-        // setStatusToNone -> forceUpdateOrigin -> onValueChange
-        this.caramelChat$setStatusToNone();
     }
 
     @Inject(

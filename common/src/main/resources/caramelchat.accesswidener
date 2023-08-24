@@ -7,6 +7,8 @@ accessible field net/minecraft/client/gui/components/EditBox bordered Z
 accessible field net/minecraft/client/gui/components/EditBox cursorPos I
 accessible field net/minecraft/client/gui/components/EditBox highlightPos I
 
+accessible field net/minecraft/client/gui/font/TextFieldHelper setMessageFn Ljava/util/function/Consumer;
+mutable field net/minecraft/client/gui/font/TextFieldHelper setMessageFn Ljava/util/function/Consumer;
 accessible field net/minecraft/client/gui/font/TextFieldHelper stringValidator Ljava/util/function/Predicate;
 
 accessible method net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen setMessage (Ljava/lang/String;)V
