@@ -10,4 +10,9 @@ public final class UnknownOperator implements IOperator {
     @Override
     public void setFocused(final boolean focus) {
     }
+
+    @Override
+    public boolean isFocused() {
+        return false;
+    }
 }

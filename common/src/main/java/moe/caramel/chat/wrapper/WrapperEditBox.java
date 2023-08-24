@@ -60,7 +60,10 @@ public final class WrapperEditBox extends AbstractIMEWrapper {
     @Override
     protected void setPreviewText(final String text) {
         this.wrapped.value = text;
-        this.insertCallback.run();
+
+        if (this.wrapped.isFocused()) {
+            this.insertCallback.run();
+        }
     }
 
     @Override

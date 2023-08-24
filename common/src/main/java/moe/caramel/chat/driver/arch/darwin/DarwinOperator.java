@@ -62,4 +62,9 @@ public class DarwinOperator implements IOperator {
             this.nowFocused = focus;
         }
     }
+
+    @Override
+    public boolean isFocused() {
+        return nowFocused;
+    }
 }

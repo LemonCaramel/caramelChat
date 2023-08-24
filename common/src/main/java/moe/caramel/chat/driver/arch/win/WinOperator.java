@@ -44,4 +44,9 @@ public final class WinOperator implements IOperator {
             this.controller.setFocus(false);
         }
     }
+
+    @Override
+    public boolean isFocused() {
+        return nowFocused;
+    }
 }
