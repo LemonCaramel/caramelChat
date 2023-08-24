@@ -11,4 +11,11 @@ public interface IOperator {
      * @param focus focus
      */
     void setFocused(final boolean focus);
+
+    /**
+     * Get whether to focus or not. (Wrapper)
+     *
+     * @return focus
+     */
+    boolean isFocused();
 }

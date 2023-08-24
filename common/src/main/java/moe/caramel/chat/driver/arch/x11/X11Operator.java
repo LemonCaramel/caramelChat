@@ -46,4 +46,9 @@ public final class X11Operator implements IOperator {
             X11Controller.setupKeyboardEvent();
         }
     }
+
+    @Override
+    public boolean isFocused() {
+        return nowFocused;
+    }
 }

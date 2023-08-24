@@ -24,6 +24,15 @@ public abstract class AbstractIMEWrapper {
         this.origin = defValue;
     }
 
+    /**
+     * Gets the IME Operator.
+     *
+     * @return IME Operator
+     */
+    public IOperator getIme() {
+        return ime;
+    }
+
     // ================================
 
     /**
