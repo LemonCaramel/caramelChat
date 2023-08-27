@@ -55,6 +55,7 @@ public abstract class MixinEditBox implements EditBoxController {
 
     @Unique
     private void caramelChat$caretFormatter() {
+        // Set caret renderer
         this.formatter = ((original, firstPos) -> {
             /* Original */
             if (caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
