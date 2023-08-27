@@ -13,19 +13,22 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 /**
  * EditBox Component Mixin
  */
-@Mixin(EditBox.class)
+@Mixin(value = EditBox.class, priority = 0)
 public abstract class MixinEditBox implements EditBoxController {
 
     @Unique private WrapperEditBox caramelChat$wrapper;
     @Unique private BiFunction<String, Integer, FormattedCharSequence> caramelChat$formatter;
+    @Unique private int caramelChat$cacheCursorPos, caramelChat$cacheHighlightPos;
     @Shadow private BiFunction<String, Integer, FormattedCharSequence> formatter;
     @Shadow private boolean canLoseFocus;
     @Shadow public String value;
@@ -96,10 +99,32 @@ public abstract class MixinEditBox implements EditBoxController {
 
     // ================================ (IME)
 
-    @Inject(method = { "setValue", "insertText" }, at = @At("HEAD"))
-    private void updateTextHead(final String text, final CallbackInfo ci) {
+    @Inject(method = "setValue", at = @At("HEAD"))
+    private void setValueHead(final String text, final CallbackInfo ci) {
         // setStatusToNone -> forceUpdateOrigin -> onValueChange
-        this.caramelChat$setStatusToNone();
+        if (caramelChat$wrapper.valueChanged) {
+            this.caramelChat$cacheCursorPos = 0;
+            this.caramelChat$cacheHighlightPos = 0;
+        } else {
+            this.caramelChat$setStatusToNone();
+        }
+    }
+
+    @Redirect(
+        method = "setValue",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/function/Predicate;test(Ljava/lang/Object;)Z"
+        )
+    )
+    private boolean setValuePredicateTest(final Predicate<String> predicate, final Object value) {
+        if (caramelChat$wrapper.valueChanged) {
+            this.caramelChat$cacheCursorPos = this.cursorPos;
+            this.caramelChat$cacheHighlightPos = this.highlightPos;
+            return true;
+        }
+
+        return predicate.test((String) value);
     }
 
     @Inject(
@@ -107,10 +132,25 @@ public abstract class MixinEditBox implements EditBoxController {
         at = @At(
             value = "INVOKE", shift = At.Shift.BEFORE,
             target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorToEnd()V"
-        )
+        ), cancellable = true
     )
     private void setValueInvoke(final String text, final CallbackInfo ci) {
+        if (caramelChat$wrapper.valueChanged) {
+            ci.cancel();
+            // caxton Compatibility
+            this.cursorPos = this.caramelChat$cacheCursorPos;
+            this.highlightPos = this.caramelChat$cacheHighlightPos;
+            this.caramelChat$wrapper.valueChanged = false;
+            return;
+        }
+
         this.caramelChat$forceUpdateOrigin();
+    }
+
+    @Inject(method = "insertText", at = @At("HEAD"))
+    private void insertTextHead(final String text, final CallbackInfo ci) {
+        // setStatusToNone -> forceUpdateOrigin -> onValueChange
+        this.caramelChat$setStatusToNone();
     }
 
     @Inject(
@@ -173,6 +213,7 @@ public abstract class MixinEditBox implements EditBoxController {
     // ================================ (Fix MC-140646)
 
     @Shadow private boolean shiftPressed;
+    @Shadow public int cursorPos;
     @Shadow public int highlightPos;
     @Shadow public abstract void setHighlightPos(int i);
 
