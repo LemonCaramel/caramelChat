@@ -24,6 +24,10 @@ public final class WrapperSignEditScreen extends AbstractIMEWrapper {
 
     @Override
     protected int getCursorPos() {
+        if (wrapped.signField == null) { // Nullable
+            return 0;
+        }
+
         return wrapped.signField.getCursorPos();
     }
 
@@ -50,7 +54,7 @@ public final class WrapperSignEditScreen extends AbstractIMEWrapper {
     @Override
     public Rect getRect() {
         /* Calc Position */
-        final int xWidth = wrapped.font.width(this.getTextWithPreview().substring(0, wrapped.signField.getCursorPos()));
+        final int xWidth = wrapped.font.width(this.getTextWithPreview().substring(0, getCursorPos()));
         final float x = ( (wrapped.width / 2.0f) + (xWidth / 2.0f) );
 
         final float yHeight = 90.0f + ( (wrapped.line - 1) * wrapped.sign.getTextLineHeight() );

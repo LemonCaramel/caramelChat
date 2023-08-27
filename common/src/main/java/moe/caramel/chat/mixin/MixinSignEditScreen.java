@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
@@ -27,7 +28,7 @@ import java.util.function.Consumer;
 public final class MixinSignEditScreen implements ScreenController {
 
     @Unique private WrapperSignEditScreen caramelChat$wrapper;
-    @Unique private boolean caramelChat$textFieldInit;
+    @Unique private boolean caramelChat$lazyInit;
     @Shadow @Nullable public TextFieldHelper signField;
     @Shadow @Final public SignBlockEntity sign;
     @Shadow public int line;
@@ -39,10 +40,10 @@ public final class MixinSignEditScreen implements ScreenController {
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    private void tick(final CallbackInfo ci) {
+    private void lazyInit(final CallbackInfo ci) {
         // Stendhal mod creates a new signField... :scream:
-        if (!caramelChat$textFieldInit && signField != null) {
-            this.caramelChat$textFieldInit = true;
+        if (!caramelChat$lazyInit && signField != null) {
+            this.caramelChat$lazyInit = true;
 
             final Consumer<String> previous = (signField.setMessageFn);
             this.signField.setMessageFn = (value) -> {
@@ -58,6 +59,21 @@ public final class MixinSignEditScreen implements ScreenController {
     })
     private void keyPressed(final int key, final int scancode, final int action, final CallbackInfoReturnable<Boolean> cir) {
         this.caramelChat$wrapper.setOrigin();
+    }
+
+    @Redirect(
+        method = "keyPressed",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/font/TextFieldHelper;keyPressed(I)Z"
+        )
+    )
+    private boolean helperKeyPressed(final TextFieldHelper helper, final int key) {
+        final boolean result = helper.keyPressed(key);
+        if (result) {
+            this.caramelChat$wrapper.setToNoneStatus();
+        }
+        return result;
     }
 
     @ModifyArgs(
