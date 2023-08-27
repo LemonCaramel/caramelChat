@@ -10,6 +10,7 @@ public final class WrapperEditBox extends AbstractIMEWrapper {
 
     private final EditBox wrapped;
     private Runnable insertCallback;
+    public boolean valueChanged;
 
     public WrapperEditBox(final EditBox box) {
         super(box.value);
@@ -59,7 +60,8 @@ public final class WrapperEditBox extends AbstractIMEWrapper {
 
     @Override
     protected void setPreviewText(final String text) {
-        this.wrapped.value = text;
+        this.valueChanged = true;
+        this.wrapped.setValue(text);
 
         if (this.wrapped.isFocused()) {
             this.insertCallback.run();
