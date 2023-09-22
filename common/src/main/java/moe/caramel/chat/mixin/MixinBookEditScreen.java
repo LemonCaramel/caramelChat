@@ -190,6 +190,5 @@ public abstract class MixinBookEditScreen extends Screen implements ScreenContro
         // Run cancelled task
         this.renderHighlight(helper, cache.selection);
         this.renderCursor(helper, cache.cursor, cache.cursorAtEnd);
-        super.render(helper, mouseX, mouseY, delta);
     }
 }

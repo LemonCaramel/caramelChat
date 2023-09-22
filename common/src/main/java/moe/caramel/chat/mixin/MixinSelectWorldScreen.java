@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * SelectWorldScreen Mixin (Fix Editbox Focus)
+ * SelectWorldScreen Mixin (Fix MC-265273)
  * I don't have a good idea right now...
  */
 @Mixin(SelectWorldScreen.class)

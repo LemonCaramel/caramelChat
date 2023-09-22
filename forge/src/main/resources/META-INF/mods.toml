@@ -48,11 +48,11 @@ Provides an enhanced IME input experience in Minecraft.
 [[dependencies.caramelchat]]
    modId = "forge"
    mandatory = true
-   versionRange = "[47,)"
+   versionRange = "[48,)"
    side = "CLIENT"
 
 [[dependencies.caramelchat]]
    modId="minecraft"
    mandatory=true
-   versionRange = "[1.20,)"
+   versionRange = "[1.20.2,)"
    side = "CLIENT"

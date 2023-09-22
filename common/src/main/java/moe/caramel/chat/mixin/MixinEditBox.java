@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
@@ -31,6 +30,8 @@ public abstract class MixinEditBox implements EditBoxController {
     @Unique private int caramelChat$cacheCursorPos, caramelChat$cacheHighlightPos;
     @Shadow private BiFunction<String, Integer, FormattedCharSequence> formatter;
     @Shadow private boolean canLoseFocus;
+    @Shadow public int highlightPos;
+    @Shadow public int cursorPos;
     @Shadow public String value;
 
     @Inject(
@@ -102,7 +103,7 @@ public abstract class MixinEditBox implements EditBoxController {
     @Inject(method = "setValue", at = @At("HEAD"))
     private void setValueHead(final String text, final CallbackInfo ci) {
         // setStatusToNone -> forceUpdateOrigin -> onValueChange
-        if (caramelChat$wrapper.valueChanged) {
+        if (this.caramelChat$wrapper != null && this.caramelChat$wrapper.valueChanged) {
             this.caramelChat$cacheCursorPos = 0;
             this.caramelChat$cacheHighlightPos = 0;
         } else {
@@ -118,7 +119,7 @@ public abstract class MixinEditBox implements EditBoxController {
         )
     )
     private boolean setValuePredicateTest(final Predicate<String> predicate, final Object value) {
-        if (caramelChat$wrapper.valueChanged) {
+        if (this.caramelChat$wrapper != null && this.caramelChat$wrapper.valueChanged) {
             this.caramelChat$cacheCursorPos = this.cursorPos;
             this.caramelChat$cacheHighlightPos = this.highlightPos;
             return true;
@@ -131,11 +132,11 @@ public abstract class MixinEditBox implements EditBoxController {
         method = "setValue",
         at = @At(
             value = "INVOKE", shift = At.Shift.BEFORE,
-            target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorToEnd()V"
+            target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorToEnd(Z)V"
         ), cancellable = true
     )
     private void setValueInvoke(final String text, final CallbackInfo ci) {
-        if (caramelChat$wrapper.valueChanged) {
+        if (this.caramelChat$wrapper != null && this.caramelChat$wrapper.valueChanged) {
             ci.cancel();
             // caxton Compatibility
             this.cursorPos = this.caramelChat$cacheCursorPos;
@@ -175,7 +176,7 @@ public abstract class MixinEditBox implements EditBoxController {
         method = "deleteChars",
         at = @At(
             value = "INVOKE", shift = At.Shift.BEFORE,
-            target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(I)V"
+            target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(IZ)V"
         )
     )
     private void deleteChars(final int pos, final CallbackInfo ci) {
@@ -208,42 +209,5 @@ public abstract class MixinEditBox implements EditBoxController {
         if (this.caramelChat$wrapper != null) {
             this.caramelChat$wrapper.setOrigin(value);
         }
-    }
-
-    // ================================ (Fix MC-140646)
-
-    @Shadow private boolean shiftPressed;
-    @Shadow public int cursorPos;
-    @Shadow public int highlightPos;
-    @Shadow public abstract void setHighlightPos(int i);
-
-    @Inject(
-        method = "moveCursorTo",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/components/EditBox;setCursorPosition(I)V"
-        )
-    )
-    private void moveCursorTo(final int cursor, final CallbackInfo ci) {
-        if (this.shiftPressed) {
-            final int previous = highlightPos;
-            this.setHighlightPos(cursor);
-            this.highlightPos = previous;
-        }
-
-        // Set Status to None
-        this.caramelChat$setStatusToNone();
-    }
-
-    @ModifyArg(
-        method = "renderWidget",
-        at = @At(
-            value = "INVOKE",
-            target = "Ljava/lang/String;substring(II)Ljava/lang/String;",
-            ordinal = 1
-        ), index = 1
-    )
-    private int renderWidget(final int selectionEnd) {
-        return Math.max(0, selectionEnd);
     }
 }
