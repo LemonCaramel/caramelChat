@@ -9,6 +9,7 @@
         "MixinCreativeModeInventoryScreen",
         "MixinEditBox",
         "MixinMinecraft",
+        "MixinRecipeBookComponent",
         "MixinSelectWorldScreen",
         "MixinSignEditScreen"
     ]
