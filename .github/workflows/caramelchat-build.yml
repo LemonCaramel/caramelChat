@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.ref_type != 'tag'
 
     steps:
       - uses: actions/checkout@v3
