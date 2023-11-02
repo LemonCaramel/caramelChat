@@ -34,12 +34,23 @@ public abstract class MixinEditBox implements EditBoxController {
     @Shadow public int cursorPos;
     @Shadow public String value;
 
+    @Redirect(
+        method = "<init>(Lnet/minecraft/client/gui/Font;IIIILnet/minecraft/client/gui/components/EditBox;Lnet/minecraft/network/chat/Component;)V",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;setValue(Ljava/lang/String;)V")
+    )
+    private void init(final EditBox self, final String value) {
+        this.caramelChat$wrapper = new WrapperEditBox((EditBox) (Object) this);
+        self.setValue(value);
+    }
+
     @Inject(
         method = "<init>(Lnet/minecraft/client/gui/Font;IIIILnet/minecraft/client/gui/components/EditBox;Lnet/minecraft/network/chat/Component;)V",
         at = @At("TAIL")
     )
-    private void init(final CallbackInfo ci) {
-        this.caramelChat$wrapper = new WrapperEditBox((EditBox) (Object) this);
+    private void lazyInit(final CallbackInfo ci) {
+        if (this.caramelChat$wrapper == null) {
+            this.caramelChat$wrapper = new WrapperEditBox((EditBox) (Object) this);
+        }
         this.caramelChat$formatter = this.formatter; // Cache
         this.caramelChat$caretFormatter();
     }
