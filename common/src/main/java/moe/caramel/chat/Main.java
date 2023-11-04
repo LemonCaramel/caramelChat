@@ -79,7 +79,7 @@ public final class Main {
                 final InputStream is = url.openStream();
                 final FileOutputStream fos = new FileOutputStream(lib)
             ) {
-                ModLogger.debug("Extracting library to {0}", lib.getAbsolutePath());
+                ModLogger.debug("Extracting library to {}", lib.getAbsolutePath());
                 fos.write(is.readAllBytes());
                 lib.deleteOnExit();
             }

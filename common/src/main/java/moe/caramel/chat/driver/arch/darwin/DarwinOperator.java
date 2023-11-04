@@ -1,7 +1,6 @@
 package moe.caramel.chat.driver.arch.darwin;
 
-import com.sun.jna.Memory;
-import com.sun.jna.Pointer;
+import com.mojang.blaze3d.platform.Window;
 import moe.caramel.chat.driver.IOperator;
 import moe.caramel.chat.util.ModLogger;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
@@ -38,18 +37,20 @@ public class DarwinOperator implements IOperator {
                 this.wrapper.appendPreviewText(str);
             },
             // Rect Range
-            () -> {
+            (pointer) -> {
                 ModLogger.debug("[Native|Java] Called to determine where to draw.");
                 final float[] buff = this.wrapper.getRect().copy();
-                final float factor = (float) Minecraft.getInstance().getWindow().getGuiScale();
+                final Window window = Minecraft.getInstance().getWindow();
+                final float factor = (float) window.getGuiScale();
                 buff[0] *= factor;
                 buff[1] *= factor;
                 buff[2] *= factor;
                 buff[3] *= factor;
 
-                final Pointer rect = new Memory(Float.BYTES * 4);
-                rect.write(0, buff, 0, 4);
-                return rect;
+                buff[0] += window.getX();
+                buff[1] += window.getY();
+
+                pointer.write(0, buff, 0, 4);
             }
         );
     }
