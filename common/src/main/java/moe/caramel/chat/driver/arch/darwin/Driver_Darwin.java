@@ -44,7 +44,7 @@ public interface Driver_Darwin extends Library {
     }
 
     interface FirstRectForCharacterRange extends Callback {
-        Pointer invoke();
+        void invoke(final Pointer pointer);
     }
 
     interface LogInfoCallback extends Callback {
