@@ -184,7 +184,7 @@ public abstract class MixinEditBox implements EditBoxController {
     }
 
     @Inject(
-        method = "deleteChars",
+        method = "deleteCharsToPos",
         at = @At(
             value = "INVOKE", shift = At.Shift.BEFORE,
             target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(IZ)V"
