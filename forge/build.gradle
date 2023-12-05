@@ -8,13 +8,12 @@ architectury {
 }
 
 loom {
-    // https://github.com/architectury/architectury-loom/issues/112
-    accessWidenerPath = project(":common").file("src/main/resources/caramelchat.accesswidener")
-    mixin { defaultRefmapName = "caramelchat-forge.refmap.json" }
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
     forge {
         convertAccessWideners = true
-        extraAccessWideners.add("caramelchat.accesswidener")
-        mixinConfigs = [ "caramelchat.mixins.json" ]
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+        mixinConfig "caramelchat.mixins.json"
     }
 }
 

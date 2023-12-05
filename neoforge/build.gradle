@@ -4,18 +4,15 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    fabric()
+    neoForge()
+}
+
+repositories {
+    maven { url "https://maven.neoforged.net/releases/" }
 }
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    // for Debug
-    runs {
-        client {
-            vmArgs "-Dmixin.debug.export=true"
-        }
-    }
 }
 
 configurations {
@@ -23,36 +20,33 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
-}
-
-task copyCommonResources(type: Copy) {
-    from fileTree(project(":common").file("src/main/resources"))
-    into file("build/resources/main")
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
 }
 
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
 }
 
 shadowJar {
+    exclude "fabric.mod.json"
+
     configurations = [project.configurations.shadowCommon]
     archiveClassifier.set("dev-shadow")
 }
 
 remapJar {
-    injectAccessWidener = true
+    atAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
     inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set(null)
@@ -60,10 +54,6 @@ remapJar {
 
 jar {
     archiveClassifier.set("dev")
-}
-
-runClient {
-    dependsOn(copyCommonResources)
 }
 
 sourcesJar {
