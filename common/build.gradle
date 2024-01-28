@@ -1,5 +1,6 @@
 repositories {
     maven { url "https://maven.terraformersmc.com/" }
+    maven { url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -9,6 +10,7 @@ dependencies {
 
     // Other mods
     modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}"
+    modCompileOnly "maven.modrinth:xaeros-minimap:${xaeros_minimap_version}"
 }
 
 architectury {
