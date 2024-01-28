@@ -20,6 +20,11 @@ public final class Compatibilities {
         )
     );
 
+    public static final Data XAERO_MINIMAP = register(
+        "Xaero's Minimap", "xaero.common.gui.GuiAddWaypoint",
+        Set.of("moe.caramel.chat.mixin.xaeromap.MixinPluginXaeroMapWayPoint")
+    );
+
     // ================================
 
     /**
