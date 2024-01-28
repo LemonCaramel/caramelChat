@@ -1,6 +1,7 @@
 {
     "package": "moe.caramel.chat.mixin",
     "compatibilityLevel": "JAVA_17",
+    "plugin": "moe.caramel.chat.plugin.MixinPlugin",
     "minVersion": "0.8.5",
     "required": true,
     "client": [
