@@ -12,6 +12,8 @@
         "MixinMinecraft",
         "MixinRecipeBookComponent",
         "MixinSelectWorldScreen",
-        "MixinSignEditScreen"
+        "MixinSignEditScreen",
+        "emi.MixinPluginEmiPort",
+        "emi.MixinPluginEmiSearchWidget"
     ]
 }

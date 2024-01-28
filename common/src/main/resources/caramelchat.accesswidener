@@ -4,8 +4,10 @@ accessible field net/minecraft/client/gui/components/EditBox font Lnet/minecraft
 accessible field net/minecraft/client/gui/components/EditBox value Ljava/lang/String;
 accessible field net/minecraft/client/gui/components/EditBox maxLength I
 accessible field net/minecraft/client/gui/components/EditBox bordered Z
+accessible field net/minecraft/client/gui/components/EditBox canLoseFocus Z
 accessible field net/minecraft/client/gui/components/EditBox cursorPos I
 accessible field net/minecraft/client/gui/components/EditBox highlightPos I
+accessible field net/minecraft/client/gui/components/EditBox responder Ljava/util/function/Consumer;
 
 accessible field net/minecraft/client/gui/font/TextFieldHelper setMessageFn Ljava/util/function/Consumer;
 mutable field net/minecraft/client/gui/font/TextFieldHelper setMessageFn Ljava/util/function/Consumer;
