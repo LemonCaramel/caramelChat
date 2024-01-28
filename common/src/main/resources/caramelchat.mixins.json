@@ -13,6 +13,7 @@
         "MixinSelectWorldScreen",
         "MixinSignEditScreen",
         "emi.MixinPluginEmiPort",
-        "emi.MixinPluginEmiSearchWidget"
+        "emi.MixinPluginEmiSearchWidget",
+        "xaeromap.MixinPluginXaeroMapWayPoint"
     ]
 }
