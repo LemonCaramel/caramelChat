@@ -12,6 +12,14 @@ public final class Compatibilities {
 
     private static final Map<String, Data> REGISTRY = new HashMap<>();
 
+    public static final Data EMI = register(
+        "EMI", "dev.emi.emi.screen.widget.EmiSearchWidget",
+        Set.of(
+            "moe.caramel.chat.mixin.emi.MixinPluginEmiPort",
+            "moe.caramel.chat.mixin.emi.MixinPluginEmiSearchWidget"
+        )
+    );
+
     // ================================
 
     /**
