@@ -4,11 +4,27 @@ import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Pointer;
 import com.sun.jna.WString;
+import moe.caramel.chat.driver.KeyboardStatus.Language;
+import java.util.Map;
 
 /**
  * CocoaInput Windows Driver
  */
 public interface Driver_Win extends Library {
+
+    int LAYOUT_CHINESE_TRADITIONAL = 0x0404;
+    int LAYOUT_JAPANESE = 0x0411;
+    int LAYOUT_KOREAN = 0x0412;
+    int LAYOUT_CHINESE_SIMPLIFIED = 0x0804;
+
+    Map<Integer, Language> LAYOUT_MAP = Map.of(
+        LAYOUT_KOREAN, Language.KOREAN,
+        LAYOUT_JAPANESE, Language.JAPANESE,
+        LAYOUT_CHINESE_SIMPLIFIED, Language.CHINESE_SIMPLIFIED,
+        LAYOUT_CHINESE_TRADITIONAL, Language.CHINESE_TRADITIONAL
+    );
+
+    // ================================
 
     /**
      * Initialize CocoaInput Windows Driver.
@@ -37,6 +53,20 @@ public interface Driver_Win extends Library {
      * @param flag focus
      */
     void set_focus(final int flag);
+
+    /**
+     * Gets the current keyboard layout.
+     *
+     * @return current keyboard layout
+     */
+    int getKeyboardLayout();
+
+    /**
+     * Gets the current IME status.
+     *
+     * @return IME status. (Native if 1)
+     */
+    int getStatus();
 
     // ================================
 

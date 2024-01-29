@@ -7,6 +7,7 @@ import moe.caramel.chat.driver.arch.x11.X11Controller;
 import moe.caramel.chat.util.ModLogger;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -37,6 +38,16 @@ public interface IController {
     void setFocus(final boolean focus);
 
     /**
+     * Gets the current keyboard status.
+     *
+     * @return keyboard status (if {@code null}, OS isn't supported)
+     */
+    @Nullable
+    default KeyboardStatus getKeyboardStatus() {
+        return null;
+    }
+
+    /**
      * Gets the controller.
      *
      * @return controller
@@ -58,6 +69,6 @@ public interface IController {
         } catch (final Exception exception) {
             ModLogger.error("Error while loading the CocoaInput Driver.", exception);
         }
-        return new UnknownController();
+        return UnknownController.INSTANCE;
     }
 }
