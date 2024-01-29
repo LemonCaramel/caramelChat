@@ -18,9 +18,7 @@ import java.net.URL;
  */
 public final class Main {
 
-    public static final String MOD_ID = "caramelchat";
     static { Main.instance = new Main(); }
-
     public static final boolean DEBUG = false;
 
     private static Main instance;

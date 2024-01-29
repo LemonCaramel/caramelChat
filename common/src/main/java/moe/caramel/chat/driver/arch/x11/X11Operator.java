@@ -1,5 +1,6 @@
 package moe.caramel.chat.driver.arch.x11;
 
+import moe.caramel.chat.driver.IController;
 import moe.caramel.chat.driver.IOperator;
 import moe.caramel.chat.util.ModLogger;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
@@ -25,6 +26,11 @@ public final class X11Operator implements IOperator {
      */
     public AbstractIMEWrapper getWrapper() {
         return wrapper;
+    }
+
+    @Override
+    public IController getController() {
+        return controller;
     }
 
     @Override

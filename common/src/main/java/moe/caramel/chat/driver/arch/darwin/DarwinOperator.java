@@ -1,6 +1,7 @@
 package moe.caramel.chat.driver.arch.darwin;
 
 import com.mojang.blaze3d.platform.Window;
+import moe.caramel.chat.driver.IController;
 import moe.caramel.chat.driver.IOperator;
 import moe.caramel.chat.util.ModLogger;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
@@ -53,6 +54,11 @@ public class DarwinOperator implements IOperator {
                 pointer.write(0, buff, 0, 4);
             }
         );
+    }
+
+    @Override
+    public IController getController() {
+        return controller;
     }
 
     @Override
