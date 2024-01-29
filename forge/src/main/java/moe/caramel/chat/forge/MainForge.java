@@ -1,10 +1,15 @@
 package moe.caramel.chat.forge;
 
-import moe.caramel.chat.Main;
+import static moe.caramel.chat.PlatformProvider.MOD_ID;
+import moe.caramel.chat.PlatformProvider;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLLoader;
 
-@Mod(Main.MOD_ID)
+@Mod(MOD_ID)
 public final class MainForge {
 
-    public MainForge() { }
+    public MainForge() {
+        final String version = FMLLoader.getLoadingModList().getModFileById(MOD_ID).versionString();
+        PlatformProvider.setProvider(new ForgeProvider(version));
+    }
 }

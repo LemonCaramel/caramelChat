@@ -21,6 +21,9 @@
   "icon": "icon.png",
 
   "environment": "client",
+  "entrypoints": {
+    "client": [ "moe.caramel.chat.fabric.MainFabric" ]
+  },
   "accessWidener": "caramelchat.accesswidener",
   "mixins": [ "caramelchat.mixins.json" ],
   "depends": {

@@ -1,3 +1,5 @@
 {
-    "modmenu.descriptionTranslation.caramelchat": "Provides an enhanced IME input experience in Minecraft."
+    "modmenu.descriptionTranslation.caramelchat": "Provides an enhanced IME input experience in Minecraft.",
+
+    "caramel.chat.redistribution_warn": "caramelChat is exclusively distributed on Modrinth. Please refrain from redistributing it."
 }

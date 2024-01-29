@@ -11,7 +11,9 @@ import net.minecraft.client.gui.screens.Screen;
  */
 public final class UnknownController implements IController {
 
-    public UnknownController() {
+    public static final IController INSTANCE = new UnknownController();
+
+    private UnknownController() {
         ModLogger.log("[Native] Load the Unknown Controller.");
     }
 

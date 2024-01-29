@@ -1,3 +1,5 @@
 {
-    "modmenu.descriptionTranslation.caramelchat": "Minecraft에서 향상된 IME 입력 경험을 제공합니다."
+    "modmenu.descriptionTranslation.caramelchat": "Minecraft에서 향상된 IME 입력 경험을 제공합니다.",
+
+    "caramel.chat.redistribution_warn": "caramelChat은 오직 Modrinth에서만 배포합니다. 재배포는 하지 말아주세요."
 }

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xaero.common.gui.GuiAddWaypoint;
 
 /**
- * (Xaero's Minimap Mixin) ???.
+ * (Xaero's Minimap Mixin) Fix IME.
  */
 @Mixin(GuiAddWaypoint.class)
 public abstract class MixinPluginXaeroMapWayPoint {
@@ -22,7 +22,7 @@ public abstract class MixinPluginXaeroMapWayPoint {
     @Shadow private EditBox nameTextField;
     @Shadow private EditBox initialTextField;
     @Shadow(remap = false) private boolean ignoreEditBoxChanges;
-    @Shadow(remap = false) protected abstract void postType(GuiEventListener focused);
+    @Shadow(remap = false) protected abstract void postType(final GuiEventListener focused);
 
     @Inject(method = "init", at = @At("TAIL"))
     private void init(final CallbackInfo ci) {
