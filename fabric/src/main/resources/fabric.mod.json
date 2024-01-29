@@ -21,11 +21,14 @@
   "icon": "icon.png",
 
   "environment": "client",
+  "entrypoints": {
+    "client": [ "moe.caramel.chat.fabric.MainFabric" ]
+  },
   "accessWidener": "caramelchat.accesswidener",
   "mixins": [ "caramelchat.mixins.json" ],
   "depends": {
     "fabricloader": ">=0.14.0",
-    "minecraft": ">=1.20.2"
+    "minecraft": "1.20.2"
   },
   "breaks": {
     "lunar": "*",

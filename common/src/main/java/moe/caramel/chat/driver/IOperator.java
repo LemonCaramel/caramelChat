@@ -6,6 +6,13 @@ package moe.caramel.chat.driver;
 public interface IOperator {
 
     /**
+     * Gets the IME controller.
+     *
+     * @return controller
+     */
+    IController getController();
+
+    /**
      * Set whether to focus or not. (Wrapper)
      *
      * @param focus focus

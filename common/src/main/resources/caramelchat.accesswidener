@@ -8,6 +8,11 @@ accessible field net/minecraft/client/gui/components/EditBox cursorPos I
 accessible field net/minecraft/client/gui/components/EditBox highlightPos I
 accessible field net/minecraft/client/gui/components/EditBox responder Ljava/util/function/Consumer;
 
+accessible field net/minecraft/client/gui/components/CommandSuggestions commandUsage Ljava/util/List;
+accessible field net/minecraft/client/gui/components/CommandSuggestions commandUsagePosition I
+accessible field net/minecraft/client/gui/components/CommandSuggestions suggestions Lnet/minecraft/client/gui/components/CommandSuggestions$SuggestionsList;
+accessible field net/minecraft/client/gui/components/CommandSuggestions$SuggestionsList rect Lnet/minecraft/client/renderer/Rect2i;
+
 accessible field net/minecraft/client/gui/font/TextFieldHelper setMessageFn Ljava/util/function/Consumer;
 mutable field net/minecraft/client/gui/font/TextFieldHelper setMessageFn Ljava/util/function/Consumer;
 accessible field net/minecraft/client/gui/font/TextFieldHelper stringValidator Ljava/util/function/Predicate;

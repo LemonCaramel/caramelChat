@@ -6,6 +6,7 @@
     "required": true,
     "client": [
         "MixinBookEditScreen",
+        "MixinChatScreen",
         "MixinCreativeModeInventoryScreen",
         "MixinEditBox",
         "MixinMinecraft",
