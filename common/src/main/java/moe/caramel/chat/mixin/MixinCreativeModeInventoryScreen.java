@@ -1,6 +1,8 @@
 package moe.caramel.chat.mixin;
 
 import moe.caramel.chat.controller.EditBoxController;
+import moe.caramel.chat.wrapper.AbstractIMEWrapper;
+import moe.caramel.chat.wrapper.WrapperEditBox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.inventory.Slot;
@@ -20,12 +22,16 @@ public abstract class MixinCreativeModeInventoryScreen {
 
     @Shadow private EditBox searchBox;
     @Shadow public abstract void refreshSearchResults();
-    @Shadow protected abstract boolean isCreativeSlot(@Nullable Slot slot);
+    @Shadow protected abstract boolean isCreativeSlot(final @Nullable Slot slot);
 
     @Inject(method = "init", at = @At("TAIL"))
     private void init(final CallbackInfo ci) {
-        EditBoxController.getWrapper(this.searchBox)
-            .setInsertCallback(this::refreshSearchResults);
+        final WrapperEditBox wrapper = EditBoxController.getWrapper(this.searchBox);
+        wrapper.setInsertCallback(() -> {
+            if (wrapper.getStatus() == AbstractIMEWrapper.InputStatus.PREVIEW) {
+                this.refreshSearchResults();
+            }
+        });
     }
 
     @Redirect(
