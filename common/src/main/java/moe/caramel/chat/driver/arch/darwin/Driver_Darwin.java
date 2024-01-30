@@ -33,6 +33,8 @@ public interface Driver_Darwin extends Library {
 
     float invertYCoordinate(final float y);
 
+    String getStatus();
+
     // ================================
 
     interface InsertText extends Callback {
