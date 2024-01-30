@@ -73,7 +73,7 @@ public abstract class MixinChatScreen {
         final WrapperEditBox wrapper = EditBoxController.getWrapper(this.input);
         final KeyboardStatus status = wrapper.getIme().getController().getKeyboardStatus();
         if (status == null) {
-            return; // Unsupported OS
+            return; // Unsupported OS or Not yet initialized
         }
 
         /* Render Debug information */
