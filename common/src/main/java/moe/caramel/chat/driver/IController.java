@@ -2,6 +2,7 @@ package moe.caramel.chat.driver;
 
 import moe.caramel.chat.driver.arch.darwin.DarwinController;
 import moe.caramel.chat.driver.arch.unknown.UnknownController;
+import moe.caramel.chat.driver.arch.wayland.WaylandController;
 import moe.caramel.chat.driver.arch.win.WinController;
 import moe.caramel.chat.driver.arch.x11.X11Controller;
 import moe.caramel.chat.util.ModLogger;
@@ -61,6 +62,8 @@ public interface IController {
                 case GLFW.GLFW_PLATFORM_COCOA -> new DarwinController();
                 // Linux (X11)
                 case GLFW.GLFW_PLATFORM_X11 -> new X11Controller();
+                // Linux (Wayland)
+                case GLFW.GLFW_PLATFORM_WAYLAND -> new WaylandController();
                 // What?
                 default -> throw new UnsupportedOperationException();
             };
