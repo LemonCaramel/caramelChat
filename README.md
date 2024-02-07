@@ -1,8 +1,6 @@
+<img src="common/src/main/resources/icon.png" width="96" alt="caramelChat Icon"/>
+
 # caramelChat
-
-![GitHub Issues](https://img.shields.io/github/issues/LemonCaramel/caramelChat.svg)
-![GitHub Tag](https://img.shields.io/github/tag/LemonCaramel/caramelChat.svg)
-
 Provides an enhanced IME input experience in Minecraft.
 
 ---
@@ -17,14 +15,16 @@ It must be the same as the OS compatibility of CocoaInput.
 We plan to use our Native library in caramelChat v2.0.
 Compatibility will gradually improve.
 
-|            OS             |         Compatibility         |
-|:-------------------------:|:-----------------------------:|
-|   **Windows** (x86_64)    |         🟢 Compatible         |
-|    **Windows** (arm64)    |        🔴 Incompatible        |
-|     **macOS** (Intel)     |         🟢 Compatible         |
-| **macOS** (Apple Silicon) |         🟢 Compatible         |
-|  **X11 Linux** (x86_64)   | 🟡 Incompatible in some cases |
-|   **X11 Linux** (arm64)   |        🔴 Incompatible        |
+|             OS              |         Compatibility         |
+|:---------------------------:|:-----------------------------:|
+|    **Windows** (x86_64)     |         🟢 Compatible         |
+|     **Windows** (arm64)     |        🔴 Incompatible        |
+|      **macOS** (Intel)      |         🟢 Compatible         |
+|  **macOS** (Apple Silicon)  |         🟢 Compatible         |
+|   **Linux X11** (x86_64)    | 🟡 Incompatible in some cases |
+|    **Linux X11** (arm64)    |        🔴 Incompatible        |
+| **Linux Wayland** (x86_64)  | 🟡 Incompatible in some cases |
+|  **Linux Wayland** (arm64)  |        🔴 Incompatible        |
 
 Below is the ModLoader compatibility.
 
@@ -51,6 +51,15 @@ sudo mkdir -p /Library/Preferences/FeatureFlags/Domain
 sudo /usr/libexec/PlistBuddy -c "Add 'redesigned_text_cursor:Enabled' bool false" /Library/Preferences/FeatureFlags/Domain/UIKit.plist
 ```
 And then, reboot your Macintosh. This will return you to the input environment from before Sonoma.
+
+## 🛠️ Troubleshooting (Linux Wayland)
+
+In some Linux distributions that use the Wayland protocol, crashes may occur.
+This happens because Xwayland is present in the system, causing GLFW to attempt to run based on X11.
+
+Fortunately, there are third-party mods available to address this issue.
+
+**WayGL:** [Modrinth](https://modrinth.com/mod/waygl), [Github](https://github.com/wired-tomato/WayGL)
 
 ## 🚀️ Contributing
 All contributions are welcome regardless of Native or Java.
