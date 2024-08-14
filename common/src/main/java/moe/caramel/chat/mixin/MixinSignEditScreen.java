@@ -1,24 +1,27 @@
 package moe.caramel.chat.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moe.caramel.chat.controller.ScreenController;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
 import moe.caramel.chat.wrapper.WrapperSignEditScreen;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import java.util.function.Consumer;
 
 /**
@@ -76,7 +79,7 @@ public final class MixinSignEditScreen implements ScreenController {
         return result;
     }
 
-    @ModifyArgs(
+    @WrapOperation(
         method = "renderSignText",
         at = @At(
             value = "INVOKE",
@@ -84,28 +87,28 @@ public final class MixinSignEditScreen implements ScreenController {
             ordinal = 0
         )
     )
-    private void renderCaret(final Args args) {
+    private int renderCaret(final Font instance, final String text, final float x, final float y, final int color, final boolean dropShadow, final Matrix4f matrix, final MultiBufferSource buffer, final Font.DisplayMode displayMode, final int backgroundColor, final int packedLightCoords, final boolean bidirectional, final Operation<Integer> original) {
         // Check IME Status
-        final String original = args.get(0);
-        if (original.isEmpty() || caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
-            return;
+        if (text.isEmpty() || caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
+            return original.call(instance, text, x, y, color, dropShadow, matrix, buffer, displayMode, backgroundColor, packedLightCoords, bidirectional);
         }
 
         // Line Check (stupid way...)
         final int lineHeight = this.sign.getTextLineHeight();
         final int centerHeight = (4 * lineHeight / 2);
-        final int line = (((int) (float) args.get(2) + centerHeight) / lineHeight);
+        final int line = (((int) y + centerHeight) / lineHeight);
         if (line != this.line) {
-            return;
+            return original.call(instance, text, x, y, color, dropShadow, matrix, buffer, displayMode, backgroundColor, packedLightCoords, bidirectional);
         }
 
         // Render Caret
         final int firstEndPos = caramelChat$wrapper.getFirstEndPos();
         final int secondStartPos = caramelChat$wrapper.getSecondStartPos();
 
-        final String first = original.substring(0, firstEndPos);
-        final String input = original.substring(firstEndPos, secondStartPos);
-        final String second = original.substring(secondStartPos);
-        args.set(0, first + ChatFormatting.UNDERLINE + input + ChatFormatting.RESET + second); // OMG..
+        final String first = text.substring(0, firstEndPos);
+        final String input = text.substring(firstEndPos, secondStartPos);
+        final String second = text.substring(secondStartPos);
+        final String result = (first + ChatFormatting.UNDERLINE + input + ChatFormatting.RESET + second); // OMG..
+        return original.call(instance, result, x, y, color, dropShadow, matrix, buffer, displayMode, backgroundColor, packedLightCoords, bidirectional);
     }
 }
