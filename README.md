@@ -28,10 +28,11 @@ Compatibility will gradually improve.
 
 Below is the ModLoader compatibility.
 
-|     Platform     |    Support    |
-|:----------------:|:-------------:|
-|  Fabric / Quilt  | 🟢 Compatible |
-| Forge / NeoForge | 🟢 Compatible |
+|    Platform    |    Support    |
+|:--------------:|:-------------:|
+| Fabric / Quilt | 🟢 Compatible |
+|     Forge      | 🟢 Compatible |
+|    NeoForge    | 🟢 Compatible |
 
 ## 🛠️ Troubleshooting (macOS 14.0+)
 If you are using macOS Sonoma or later versions, you may experience the following issue:
