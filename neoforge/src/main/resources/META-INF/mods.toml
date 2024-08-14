@@ -6,7 +6,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the the FML version. This is currently 47.
-loaderVersion="[1,)" #mandatory
+loaderVersion="[1,2)" #mandatory
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="GNU LGPL 3.0"
@@ -50,13 +50,13 @@ config = "caramelchat.mixins.json"
 [[dependencies.caramelchat]]
 modId="neoforge"
 type="required"
-versionRange="[20.3,)"
+versionRange="[20.3,21.0)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.caramelchat]]
 modId="minecraft"
 type="required"
-versionRange="[1.20.3,)"
+versionRange="[1.20.3,1.21)"
 ordering="NONE"
 side="CLIENT"
