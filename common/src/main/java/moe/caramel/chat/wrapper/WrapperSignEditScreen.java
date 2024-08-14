@@ -70,7 +70,8 @@ public final class WrapperSignEditScreen extends AbstractIMEWrapper {
         }
 
         /* Calc Position */
-        final int xWidth = wrapped.font.width(this.getTextWithPreview().substring(0, wrapped.signField.getCursorPos()));
+        final String preview = this.getTextWithPreview();
+        final int xWidth = wrapped.font.width(preview.substring(0, Math.min(wrapped.signField.getCursorPos(), preview.length())));
         final float x = ( (wrapped.width / 2.0f) + (xWidth / 2.0f) );
 
         final float yHeight = 90.0f + ( (wrapped.line - 1) * wrapped.sign.getTextLineHeight() );
