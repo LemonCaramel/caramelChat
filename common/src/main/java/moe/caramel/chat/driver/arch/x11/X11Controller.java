@@ -23,6 +23,38 @@ public final class X11Controller implements IController {
 
     private final Driver_X11 driver;
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Driver_X11.DrawCallback drawCallback = (caret, chg_first, chg_length, length, iswstring, rawstring, rawwstring, primary, secondary, tertiary) -> {
+        ModLogger.debug("[Native|Java] Draw begin");
+        final String string = (iswstring ? rawwstring.toString() : rawstring);
+
+        if (X11Controller.focused != null) {
+            GLFW.glfwSetKeyCallback(windowId, null);
+            X11Controller.focused.getWrapper().appendPreviewText(string);
+        }
+
+        ModLogger.debug(
+                "[Native|Java] PreEdit: {} {} {} {} {} {} {} {}",
+                caret, chg_first, chg_length, length,
+                primary, secondary, tertiary, string
+        );
+
+        final int[] point = { 600, 600 };
+        final Memory memory = new Memory(8L);
+        memory.write(0L, point, 0, 2);
+        ModLogger.debug("[Native|Java] Draw End");
+        return memory;
+    };
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Driver_X11.DoneCallback doneCallback = () -> {
+        ModLogger.debug("[Native|Java] Preedit Done");
+        if (X11Controller.focused != null) {
+            X11Controller.focused.getWrapper().insertText("");
+        }
+        X11Controller.setupKeyboardEvent();
+    };
+
     /**
      * Create X11 Controller
      */
@@ -39,35 +71,9 @@ public final class X11Controller implements IController {
             // X11 Windows Id
             GLFWNativeX11.glfwGetX11Window(windowId),
             // Draw Callback
-            (caret, chg_first, chg_length, length, iswstring, rawstring, rawwstring, primary, secondary, tertiary) -> {
-                ModLogger.debug("[Native|Java] Draw begin");
-                final String string = (iswstring ? rawwstring.toString() : rawstring);
-
-                if (X11Controller.focused != null) {
-                    GLFW.glfwSetKeyCallback(windowId, null);
-                    X11Controller.focused.getWrapper().appendPreviewText(string);
-                }
-
-                ModLogger.debug(
-                    "[Native|Java] PreEdit: {} {} {} {} {} {} {} {}",
-                    caret, chg_first, chg_length, length,
-                    primary, secondary, tertiary, string
-                );
-
-                final int[] point = { 600, 600 };
-                final Memory memory = new Memory(8L);
-                memory.write(0L, point, 0, 2);
-                ModLogger.debug("[Native|Java] Draw End");
-                return memory;
-            },
+            this.drawCallback,
             // Done Callback
-            () -> {
-                ModLogger.debug("[Native|Java] Preedit Done");
-                if (X11Controller.focused != null) {
-                    X11Controller.focused.getWrapper().insertText("");
-                }
-                X11Controller.setupKeyboardEvent();
-            },
+            this.doneCallback,
             // Info
             (log) -> ModLogger.log("[Native|C] " + log),
             // Error
