@@ -1,9 +1,10 @@
 package moe.caramel.chat.mixin;
 
+import static moe.caramel.chat.PlatformProvider.getProvider;
 import static net.minecraft.client.Minecraft.UNIFORM_FONT;
-import com.mojang.blaze3d.systems.RenderSystem;
+import static net.minecraft.network.chat.Component.translatable;
+import com.mojang.serialization.JavaOps;
 import moe.caramel.chat.Main;
-import moe.caramel.chat.PlatformProvider;
 import moe.caramel.chat.controller.EditBoxController;
 import moe.caramel.chat.driver.KeyboardStatus;
 import moe.caramel.chat.wrapper.WrapperEditBox;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.util.Map;
 
 /**
  * Chat screen Mixin
@@ -35,23 +37,23 @@ public abstract class MixinChatScreen {
 
     @Unique private static final int TOOLTIP_TIME = 500;
     @Unique private static final int FADE_TIME = 250;
-    @Unique private static final Component MARK_VERSION = Component
-        .translatable("caramelChat v%s", PlatformProvider.getProvider().getVersion())
-        .setStyle(Style.EMPTY.withHoverEvent(new HoverEvent(
-            HoverEvent.Action.SHOW_TEXT,
-            Component.translatable("caramel.chat.redistribution_warn")
-        )));
+    @Unique private static final Component MARK_VERSION = translatable("caramelChat v%s", getProvider().getVersion())
+        .setStyle(Style.EMPTY.withHoverEvent(
+            HoverEvent.CODEC.parse(JavaOps.INSTANCE, Map.of(
+                "action", "show_text", //
+                "value", Map.of("translate", "caramel.chat.redistribution_warn"), // ~1.21.4
+                "content", Map.of("translate", "caramel.chat.redistribution_warn") // 1.21.5~
+            )).getOrThrow()
+        ));
 
-    @Unique KeyboardStatus.Language caramelChat$lastLanguage;
-    @Unique long caramelChat$changeTime;
+    @Unique private KeyboardStatus.Language caramelChat$lastLanguage;
+    @Unique private long caramelChat$changeTime;
 
     @Inject(method = "render", at = @At("HEAD"))
     private void render(final GuiGraphics helper, final int mouseX, final int mouseY, final float tickDelta, final CallbackInfo ci) {
         final Screen screen = ((Screen) (Object) this);
-        RenderSystem.enableBlend();
         this.caramelChat$renderMark(screen, helper, mouseX, mouseY, tickDelta);
         this.caramelChat$renderImeStatus(screen, helper, mouseX, mouseY, tickDelta);
-        RenderSystem.disableBlend();
     }
 
     @Unique
