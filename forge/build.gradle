@@ -70,3 +70,7 @@ components.java {
         skip()
     }
 }
+
+modrinth {
+    loaders = ["forge"]
+}

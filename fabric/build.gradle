@@ -77,3 +77,7 @@ components.java {
         skip()
     }
 }
+
+modrinth {
+    loaders = ["fabric", "quilt"]
+}

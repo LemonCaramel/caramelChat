@@ -67,3 +67,7 @@ components.java {
         skip()
     }
 }
+
+modrinth {
+    loaders = ["neoforge"]
+}
