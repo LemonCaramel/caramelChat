@@ -34,9 +34,9 @@ public final class X11Controller implements IController {
         }
 
         ModLogger.debug(
-                "[Native|Java] PreEdit: {} {} {} {} {} {} {} {}",
-                caret, chg_first, chg_length, length,
-                primary, secondary, tertiary, string
+            "[Native|Java] PreEdit: {} {} {} {} {} {} {} {}",
+            caret, chg_first, chg_length, length,
+            primary, secondary, tertiary, string
         );
 
         final int[] point = { 600, 600 };
