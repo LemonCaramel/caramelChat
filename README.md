@@ -62,6 +62,14 @@ Fortunately, there are third-party mods available to address this issue.
 
 **WayGL:** [Modrinth](https://modrinth.com/mod/waygl), [Github](https://github.com/wired-tomato/WayGL)
 
+## 🛠️ Troubleshooting (Linux Fcitx5)
+
+Fcitx5 may not work without using the "On The Spot" style.
+
+1. Assuming your configuration program is `fcitx5-config-qt`, Head to `Fcitx Configuration -> Addons`, find `X Input Method Frontend` and click the cog button in its row.
+2. Enable the `Use On The Spot Style (Needs restarting)` option then reboot.
+3. It should be working now.
+
 ## 🚀️ Contributing
 All contributions are welcome regardless of Native or Java.
 
