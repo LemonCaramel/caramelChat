@@ -33,11 +33,11 @@ allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
 
-    archivesBaseName = "${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.name}"
+    base.archivesName = "${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.name}"
     version = rootProject.mod_version
     group = rootProject.maven_group
 
-    tasks.withType(JavaCompile) {
+    tasks.compileJava {
         options.encoding = "UTF-8"
         options.release = 17
     }
