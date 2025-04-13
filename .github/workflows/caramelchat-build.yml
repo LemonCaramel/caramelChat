@@ -13,7 +13,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: gradle/actions/wrapper-validation@v3
 
       - name: Set up JDK
@@ -22,14 +21,8 @@ jobs:
           java-version: '21'
           distribution: 'zulu'
 
-      - name: Setup git config
-        run: |
-          git config --global user.email "no-reply@github.com"
-          git config --global user.name "Github Action"
-
       - name: Build with Gradle
-        run: |
-          ./gradlew build --stacktrace
+        run: ./gradlew build --stacktrace
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

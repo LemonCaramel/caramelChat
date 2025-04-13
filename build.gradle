@@ -1,6 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 architectury {
@@ -24,6 +25,27 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${rootProject.parchment_version}@zip")
         }
+    }
+
+    // Minotaur
+    if (project.name == "common") {
+        return
+    }
+
+    apply plugin: "com.modrinth.minotaur"
+    def versions = rootProject.support_versions.split(',').collect { it.trim() }.findAll { it }
+    def versionRange = (versions.size() == 1) ? versions[0] : "${versions.first()}-${versions.last()}"
+
+    modrinth {
+        token = System.getenv("MODRINTH_TOKEN")
+        projectId = "M4vJe1FJ"
+        versionName = "[${project.minotaur_platform}] v${rootProject.mod_version} (${versionRange})"
+        versionNumber = rootProject.mod_version
+        versionType = rootProject.release_channel
+        uploadFile = remapJar
+        gameVersions = versions
+        changelog = rootProject.file("CHANGELOG.md").text
+        detectLoaders = false
     }
 }
 
