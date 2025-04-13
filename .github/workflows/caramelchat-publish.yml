@@ -1,0 +1,24 @@
+name: Publish caramelChat
+
+on:
+  push:
+    tags: [ '*' ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+
+      - name: Publish to modrinth
+        run: ./gradlew fabric:modrinth forge:modrinth neoforge:modrinth --stacktrace
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
