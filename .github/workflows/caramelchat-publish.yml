@@ -19,6 +19,6 @@ jobs:
           distribution: 'zulu'
 
       - name: Publish to modrinth
-        run: ./gradlew fabric:modrinth forge:modrinth neoforge:modrinth --stacktrace
+        run: ./gradlew fabric:modrinth forge:modrinth --stacktrace
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
