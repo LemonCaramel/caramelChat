@@ -1,10 +1,13 @@
 package moe.caramel.chat.mixin;
 
+import moe.caramel.chat.Main;
 import moe.caramel.chat.controller.EditBoxController;
+import moe.caramel.chat.driver.arch.wayland.WaylandController;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
 import moe.caramel.chat.wrapper.WrapperEditBox;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -205,6 +210,21 @@ public abstract class MixinEditBox implements EditBoxController {
     private void setCanLoseFocus(final boolean canLoseFocus, final CallbackInfo ci) {
         if (this.caramelChat$wrapper != null && !canLoseFocus) {
             this.caramelChat$wrapper.setFocused(true);
+        }
+    }
+
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    private void keyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+        if (!Main.getController().getClass().equals(WaylandController.class)) {
+            return;
+        }
+        if (caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
+            return;
+        }
+
+        if (Screen.isSelectAll(keyCode) || Screen.isCopy(keyCode) || Screen.isCut(keyCode) || Screen.isPaste(keyCode)) {
+            cir.setReturnValue(true);
+            cir.cancel();
         }
     }
 
