@@ -2,13 +2,16 @@ package moe.caramel.chat.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import moe.caramel.chat.Main;
 import moe.caramel.chat.controller.ScreenController;
+import moe.caramel.chat.driver.arch.wayland.WaylandController;
 import moe.caramel.chat.wrapper.AbstractIMEWrapper;
 import moe.caramel.chat.wrapper.WrapperSignEditScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -69,6 +72,12 @@ public final class MixinSignEditScreen implements ScreenController {
         )
     )
     private boolean helperKeyPressed(final TextFieldHelper helper, final int key) {
+        if (Main.getController().getClass().equals(WaylandController.class) && caramelChat$wrapper.getStatus() != AbstractIMEWrapper.InputStatus.NONE) {
+            if (Screen.isSelectAll(key) || Screen.isCopy(key) || Screen.isCut(key) || Screen.isPaste(key)) {
+                return true;
+            }
+        }
+
         final boolean result = helper.keyPressed(key);
         if (result) {
             this.caramelChat$wrapper.setToNoneStatus();

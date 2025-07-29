@@ -127,7 +127,9 @@ public abstract class AbstractIMEWrapper {
         }
 
         ModLogger.debug("[Preview] Current: ({}) / Preview: ({})", this.origin, typing);
-        this.status = InputStatus.PREVIEW;
+        if (!typing.isEmpty()) {
+            this.status = InputStatus.PREVIEW;
+        }
 
         final int start = Math.min(this.getCursorPos(), this.getHighlightPos());
         final int end = Math.max(this.getCursorPos(), this.getHighlightPos());
