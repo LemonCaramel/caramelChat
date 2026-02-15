@@ -1,7 +1,16 @@
+# ABOUT ISSUE (regarding this fork)
+
+[upstream pull request](https://github.com/LemonCaramel/caramelChat/pull/45)
+
+caramelChat mod is based on native library CocoaInput-lib and this library is have some issues in linux x11 environments.
+This fork is using patched CocoaInput-lib library from [CocoaInput-lib pr](https://github.com/Korea-Minecraft-Forum/CocoaInput-lib/pull/5).
+but this is temporary solution, not resolving issues completely
+
+Provides an enhanced IME input experience in Minecraft.
+
 <img src="common/src/main/resources/icon.png" width="96" alt="caramelChat Icon"/>
 
 # caramelChat
-Provides an enhanced IME input experience in Minecraft.
 
 ---
 
