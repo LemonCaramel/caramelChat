@@ -2,9 +2,9 @@ name: Build caramelChat
 
 on:
   push:
-    branches: [ master ]
+    branches: [ ver/1.21.9 ]
   pull_request:
-    branches: [ master ]
+    branches: [ ver/1.21.9 ]
 
 jobs:
   build:
