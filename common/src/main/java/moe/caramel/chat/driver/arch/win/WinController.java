@@ -33,19 +33,19 @@ public final class WinController implements IController {
             // Window Id
             GLFWNativeWin32.glfwGetWin32Window(Minecraft.getInstance().getWindow().handle()),
             // Pre Edit Callback
-            (str, cursor, length) -> {
+            (str, cursor, length) -> Main.runOnRenderThread(() -> {
                 if (focused != null) {
                     ModLogger.debug("[Native|Java] Preedit Callback (" + str.toString() + ") (" + cursor + ") (" + length + ")");
                     focused.getWrapper().appendPreviewText(str.toString());
                 }
-            },
+            }),
             // Done Callback
-            (str) -> {
+            (str) -> Main.runOnRenderThread(() -> {
                 if (focused != null) {
                     ModLogger.debug("[Native|Java] Done Callback (" + str.toString() + ")");
                     focused.getWrapper().insertText(str.toString());
                 }
-            },
+            }),
             // Rect Callback
             (rect) -> {
                 if (focused != null) {

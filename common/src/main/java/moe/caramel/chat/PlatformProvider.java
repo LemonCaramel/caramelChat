@@ -25,6 +25,11 @@ public abstract class PlatformProvider {
         public String getPlatformName() {
             return "UNKNOWN";
         }
+
+        @Override
+        public boolean isModLoaded(String modid) {
+            return false;
+        }
     };
 
     // ================================
@@ -69,6 +74,13 @@ public abstract class PlatformProvider {
      * @return platform name
      */
     public abstract String getPlatformName();
+
+    /**
+     * Checks if a specific mod is installed
+     *
+     * @return true if the specified mod is loaded
+     */
+    public abstract boolean isModLoaded(String modid);
 
     @Override
     public String toString() {

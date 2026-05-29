@@ -2,16 +2,19 @@ package moe.caramel.chat;
 
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
+import me.decce.ixeris.api.IxerisApi;
 import moe.caramel.chat.driver.IController;
 import moe.caramel.chat.driver.arch.unknown.UnknownController;
 import moe.caramel.chat.util.ModLogger;
 import net.minecraft.client.gui.screens.Screen;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.function.Supplier;
 
 /**
  * caramelChat Main
@@ -20,12 +23,13 @@ public final class Main {
 
     static { Main.instance = new Main(); }
     public static final boolean DEBUG = false;
+    public static final boolean IXERIS_INSTALLED = PlatformProvider.getProvider().isModLoaded("ixeris");
 
     private static Main instance;
     private final IController controller;
 
     private Main() {
-        this.controller = IController.getController();
+        this.controller = queryFromMainThread(IController::getController);
 
         if (controller instanceof UnknownController) {
             ModLogger.error("caramelChat can't find appropriate Controller in running OS");
@@ -56,7 +60,46 @@ public final class Main {
      * @param screen current screen
      */
     public static void setScreen(final Screen screen) {
-        Main.getController().changeFocusedScreen(screen);
+        runOnMainThread(() -> Main.getController().changeFocusedScreen(screen));
+    }
+
+    /**
+     * Runs the specified Runnable on the main thread
+     * @param runnable The Runnable to run on the main thread
+     */
+    public static void runOnMainThread(final Runnable runnable) {
+        if (IXERIS_INSTALLED) {
+            IxerisApi.getInstance().runOnMainThread(runnable);
+        }
+        else {
+            runnable.run();
+        }
+    }
+
+    /**
+     * Queries the result of the specified Supplier from the main thread
+     * @param supplier The Supplier to query from the main thread
+     */
+    public static <T> T queryFromMainThread(final Supplier<T> supplier) {
+        if (IXERIS_INSTALLED) {
+            return IxerisApi.getInstance().query(supplier);
+        }
+        else {
+            return supplier.get();
+        }
+    }
+
+    /**
+     * Runs the specified Runnable on the render thread
+     * @param runnable The Runnable to run on the render thread
+     */
+    public static void runOnRenderThread(final Runnable runnable) {
+        if (IXERIS_INSTALLED) {
+            IxerisApi.getInstance().runLaterOnRenderThread(runnable);
+        }
+        else {
+            runnable.run();
+        }
     }
 
     /**

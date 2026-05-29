@@ -29,10 +29,12 @@ public final class X11Controller implements IController {
         ModLogger.debug("[Native|Java] Draw begin");
         final String string = (iswstring ? rawwstring.toString() : rawstring);
 
-        if (X11Controller.focused != null) {
-            GLFW.glfwSetKeyCallback(windowId, null);
-            X11Controller.focused.getWrapper().appendPreviewText(string);
-        }
+        Main.runOnRenderThread(() -> {
+            if (X11Controller.focused != null) {
+                GLFW.glfwSetKeyCallback(windowId, null);
+                X11Controller.focused.getWrapper().appendPreviewText(string);
+            }
+        });
 
         ModLogger.debug(
             "[Native|Java] PreEdit: {} {} {} {} {} {} {} {}",
@@ -48,13 +50,13 @@ public final class X11Controller implements IController {
     };
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final Driver_X11.DoneCallback doneCallback = () -> {
+    private final Driver_X11.DoneCallback doneCallback = () -> Main.runOnRenderThread(() -> {
         ModLogger.debug("[Native|Java] Preedit Done");
         if (X11Controller.focused != null) {
             X11Controller.focused.getWrapper().insertText("");
         }
         X11Controller.setupKeyboardEvent();
-    };
+    });
 
     /**
      * Create X11 Controller

@@ -20,7 +20,7 @@ public abstract class AbstractIMEWrapper {
     }
 
     protected AbstractIMEWrapper(final String defValue) {
-        this.ime = Main.getController().createOperator(this);
+        this.ime = Main.queryFromMainThread(() -> Main.getController().createOperator(this));
         this.origin = defValue;
     }
 
@@ -86,7 +86,7 @@ public abstract class AbstractIMEWrapper {
      * @param focused whether IME is enabled or not
      */
     public final void setFocused(final boolean focused) {
-        this.ime.setFocused(focused);
+        Main.runOnMainThread(() -> this.ime.setFocused(focused));
     }
 
     /**

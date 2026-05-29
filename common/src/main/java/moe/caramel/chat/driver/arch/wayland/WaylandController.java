@@ -32,26 +32,26 @@ public final class WaylandController implements IController {
             // Wayland Display Id
             GLFWNativeWayland.glfwGetWaylandDisplay(),
             // PreEdit
-            (str) -> {
+            (str) -> Main.runOnRenderThread(() -> {
                 if (focused != null) {
                     ModLogger.debug("[Native|Java] Preedit Callback (" + str.toString() + ")");
                     focused.getWrapper().appendPreviewText(str.toString());
                 }
-            },
+            }),
             // PreEdit (Null)
-            () -> {
+            () -> Main.runOnRenderThread(() -> {
                 if (focused != null) {
                     ModLogger.debug("[Native|Java] Preedit Null Callback");
                     focused.getWrapper().appendPreviewText("");
                 }
-            },
+            }),
             // Done
-            (str) -> {
+            (str) -> Main.runOnRenderThread(() -> {
                 if (focused != null) {
                     ModLogger.debug("[Native|Java] Done Callback (" + str.toString() + ")");
                     focused.getWrapper().insertText(str.toString());
                 }
-            },
+            }),
             // Rect
             (rect) -> {
                 if (focused != null) {
