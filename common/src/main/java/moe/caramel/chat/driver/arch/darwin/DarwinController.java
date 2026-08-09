@@ -18,6 +18,7 @@ import java.util.Locale;
 public final class DarwinController implements IController {
 
     private final Driver_Darwin driver;
+    private long registryGeneration;
 
     /**
      * Create Darwin Controller
@@ -47,6 +48,7 @@ public final class DarwinController implements IController {
         }
 
         this.driver.refreshInstance();
+        this.registryGeneration++;
     }
 
     @Override
@@ -60,6 +62,15 @@ public final class DarwinController implements IController {
      */
     public Driver_Darwin getDriver() {
         return driver;
+    }
+
+    /**
+     * Gets the generation of the native text field registry.
+     *
+     * @return native registry generation
+     */
+    public long getRegistryGeneration() {
+        return registryGeneration;
     }
 
     @Override

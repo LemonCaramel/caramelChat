@@ -11,6 +11,13 @@ dependencies {
     // Other mods
     modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}"
     modCompileOnly "maven.modrinth:xaeros-minimap:${xaeros_minimap_version}"
+
+    testImplementation platform("org.junit:junit-bom:5.10.3")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 architectury {

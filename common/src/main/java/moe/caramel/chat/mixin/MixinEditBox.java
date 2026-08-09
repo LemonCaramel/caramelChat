@@ -113,7 +113,7 @@ public abstract class MixinEditBox implements EditBoxController {
     @Inject(method = "setValue", at = @At("HEAD"))
     private void setValueHead(final String text, final CallbackInfo ci) {
         // setStatusToNone -> forceUpdateOrigin -> onValueChange
-        if (caramelChat$wrapper.valueChanged) {
+        if (caramelChat$wrapper.isInternalValueChange()) {
             this.caramelChat$cacheCursorPos = 0;
             this.caramelChat$cacheHighlightPos = 0;
         } else {
@@ -129,7 +129,7 @@ public abstract class MixinEditBox implements EditBoxController {
         )
     )
     private boolean setValuePredicateTest(final Predicate<String> predicate, final Object value) {
-        if (caramelChat$wrapper.valueChanged) {
+        if (caramelChat$wrapper.isInternalValueChange()) {
             this.caramelChat$cacheCursorPos = this.cursorPos;
             this.caramelChat$cacheHighlightPos = this.highlightPos;
             return true;
@@ -146,12 +146,11 @@ public abstract class MixinEditBox implements EditBoxController {
         ), cancellable = true
     )
     private void setValueInvoke(final String text, final CallbackInfo ci) {
-        if (caramelChat$wrapper.valueChanged) {
+        if (caramelChat$wrapper.isInternalValueChange()) {
             ci.cancel();
             // caxton Compatibility
             this.cursorPos = this.caramelChat$cacheCursorPos;
             this.highlightPos = this.caramelChat$cacheHighlightPos;
-            this.caramelChat$wrapper.valueChanged = false;
             return;
         }
 
