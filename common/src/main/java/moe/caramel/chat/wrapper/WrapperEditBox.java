@@ -10,7 +10,7 @@ public final class WrapperEditBox extends AbstractIMEWrapper {
 
     private final EditBox wrapped;
     private Runnable insertCallback;
-    public boolean valueChanged;
+    private final InternalValueChange valueChange = new InternalValueChange();
 
     public WrapperEditBox(final EditBox box) {
         super(box.value);
@@ -60,8 +60,7 @@ public final class WrapperEditBox extends AbstractIMEWrapper {
 
     @Override
     protected void setPreviewText(final String text) {
-        this.valueChanged = true;
-        this.wrapped.setValue(text);
+        this.valueChange.run(() -> this.wrapped.setValue(text));
 
         if (this.wrapped.isFocused()) {
             this.insertCallback.run();
@@ -83,5 +82,14 @@ public final class WrapperEditBox extends AbstractIMEWrapper {
      */
     public void setInsertCallback(final Runnable callback) {
         this.insertCallback = callback;
+    }
+
+    /**
+     * Gets whether the value is being updated internally for an IME preview.
+     *
+     * @return whether an internal value update is in progress
+     */
+    public boolean isInternalValueChange() {
+        return this.valueChange.isActive();
     }
 }
