@@ -65,7 +65,7 @@ config="caramelchat.mixins.json"
 [[dependencies.caramelchat]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.9,)"
+    versionRange="[26.2,)"
     ordering="NONE"
     side="CLIENT"
 

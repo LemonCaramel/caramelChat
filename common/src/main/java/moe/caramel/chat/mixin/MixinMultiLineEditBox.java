@@ -7,7 +7,7 @@ import moe.caramel.chat.wrapper.AbstractIMEWrapper.InputStatus;
 import moe.caramel.chat.wrapper.WrapperMultilineEditBox;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.MultilineTextField;
 import org.spongepowered.asm.mixin.Final;
@@ -40,7 +40,7 @@ public final class MixinMultiLineEditBox {
     // ================================ (Formatter)
 
     @ModifyArgs(
-        method = "renderContents",
+        method = "extractContents",
         at = @At(
             value = "INVOKE",
             target = "Ljava/lang/String;substring(II)Ljava/lang/String;",
@@ -52,7 +52,7 @@ public final class MixinMultiLineEditBox {
     }
 
     @ModifyArgs(
-        method = "renderContents",
+        method = "extractContents",
         at = @At(
             value = "INVOKE",
             target = "Ljava/lang/String;substring(II)Ljava/lang/String;",
@@ -65,26 +65,26 @@ public final class MixinMultiLineEditBox {
     }
 
     @WrapOperation(
-        method = "renderContents",
+        method = "extractContents",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)V",
+            target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)V",
             ordinal = 1
         )
     )
-    private void renderCaretMiddle(final GuiGraphics instance, final Font font, final String text, final int x, final int y, final int color, final boolean dropShadow, final Operation<Integer> original) {
+    private void renderCaretMiddle(final GuiGraphicsExtractor instance, final Font font, final String text, final int x, final int y, final int color, final boolean dropShadow, final Operation<Integer> original) {
         this.renderCaretEnd(instance, font, text, x, y, color, dropShadow, original);
     }
 
     @WrapOperation(
-        method = "renderContents",
+        method = "extractContents",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)V",
+            target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)V",
             ordinal = 2
         )
     )
-    private void renderCaretEnd(final GuiGraphics instance, final Font font, final String text, final int x, final int y, final int color, final boolean dropShadow, final Operation<Integer> original) {
+    private void renderCaretEnd(final GuiGraphicsExtractor instance, final Font font, final String text, final int x, final int y, final int color, final boolean dropShadow, final Operation<Integer> original) {
         // Check IME Status
         if (text.isEmpty() || caramelChat$wrapper.getStatus() == AbstractIMEWrapper.InputStatus.NONE) {
             original.call(instance, font, text, x, y, color, dropShadow);

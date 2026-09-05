@@ -19,11 +19,11 @@ public final class MixinSelectWorldScreen {
         method = "init",
         at = @At(
             value = "INVOKE", shift = At.Shift.AFTER,
-            target = "Lnet/minecraft/client/gui/screens/worldselection/WorldSelectionList;<init>(Lnet/minecraft/client/gui/screens/worldselection/SelectWorldScreen;Lnet/minecraft/client/Minecraft;IIIILjava/lang/String;Lnet/minecraft/client/gui/screens/worldselection/WorldSelectionList;)V"
+            target = "Lnet/minecraft/client/gui/screens/worldselection/WorldSelectionList$Builder;build()Lnet/minecraft/client/gui/screens/worldselection/WorldSelectionList;"
         ), cancellable = true
     )
     private void initWorldSelectionList(final CallbackInfo ci) {
-        if (Minecraft.getInstance().screen instanceof CreateWorldScreen) {
+        if (Minecraft.getInstance().gui.screen() instanceof CreateWorldScreen) {
             ci.cancel();
         }
     }

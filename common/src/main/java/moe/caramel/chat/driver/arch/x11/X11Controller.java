@@ -94,7 +94,7 @@ public final class X11Controller implements IController {
                 if (X11Controller.focused != null) {
                     X11Controller.focused.getWrapper().insertText(String.valueOf(Character.toChars(codepoint)));
                 } else {
-                    minecraft.keyboardHandler.charTyped(windowId, new CharacterEvent(codepoint, mods));
+                    minecraft.keyboardHandler.charTyped(windowId, new CharacterEvent(codepoint));
                 }
             });
         });

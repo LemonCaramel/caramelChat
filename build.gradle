@@ -1,6 +1,6 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
+    id "architectury-plugin" version '3.5-SNAPSHOT'
+    id "dev.architectury.loom-no-remap" version '1.17-SNAPSHOT' apply false
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -9,22 +9,10 @@ architectury {
 }
 
 subprojects {
-    apply plugin: "dev.architectury.loom"
-
-    loom {
-        silentMojangMappingsLicense()
-    }
-
-    repositories {
-        maven { url = "https://maven.parchmentmc.org" } // parchment
-    }
+    apply plugin: "dev.architectury.loom-no-remap"
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${rootProject.parchment_version}@zip")
-        }
     }
 
     // Minotaur
@@ -42,7 +30,7 @@ subprojects {
         versionName = "[${project.minotaur_platform}] v${rootProject.mod_version} (${versionRange})"
         versionNumber = rootProject.mod_version
         versionType = rootProject.release_channel
-        uploadFile = remapJar
+        uploadFile = jar
         gameVersions = versions
         changelog = rootProject.file("CHANGELOG.md").text
         detectLoaders = false
@@ -59,7 +47,7 @@ allprojects {
 
     tasks.compileJava {
         options.encoding = "UTF-8"
-        options.release = 21
+        options.release = 25
     }
 
     java {

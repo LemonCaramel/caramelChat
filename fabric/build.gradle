@@ -23,14 +23,13 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+    common(project(":common")) { transitive false }
+    shadowCommon(project(":common")) { transitive false }
 }
 
 task copyCommonResources(type: Copy) {
@@ -51,15 +50,16 @@ shadowJar {
     archiveClassifier.set("dev-shadow")
 }
 
-remapJar {
-    injectAccessWidener = true
-    inputFile.set shadowJar.archiveFile
+jar {
     dependsOn shadowJar
+    from(zipTree(shadowJar.archiveFile)) {
+        exclude "fabric.mod.json"
+    }
     archiveClassifier.set(null)
 }
 
-jar {
-    archiveClassifier.set("dev")
+tasks.withType(Jar).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 runClient {

@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * EditBox Component Mixin
@@ -32,6 +31,9 @@ public abstract class MixinEditBox implements EditBoxController {
     @Shadow public int cursorPos;
     @Shadow public String value;
     @Shadow @Final private List<EditBox.TextFormatter> formatters;
+
+    @Shadow
+    public int maxLength;
 
     @Redirect(
         method = "<init>(Lnet/minecraft/client/gui/Font;IIIILnet/minecraft/client/gui/components/EditBox;Lnet/minecraft/network/chat/Component;)V",
@@ -105,30 +107,12 @@ public abstract class MixinEditBox implements EditBoxController {
 
     @Inject(method = "setValue", at = @At("HEAD"))
     private void setValueHead(final String text, final CallbackInfo ci) {
-        // setStatusToNone -> forceUpdateOrigin -> onValueChange
-        if (this.caramelChat$wrapper != null && this.caramelChat$wrapper.valueChanged) {
-            this.caramelChat$cacheCursorPos = 0;
-            this.caramelChat$cacheHighlightPos = 0;
-        } else {
+        this.caramelChat$cacheCursorPos = this.cursorPos;
+        this.caramelChat$cacheHighlightPos = this.highlightPos;
+
+        if (this.caramelChat$wrapper == null || !this.caramelChat$wrapper.valueChanged) {
             this.caramelChat$setStatusToNone();
         }
-    }
-
-    @Redirect(
-        method = "setValue",
-        at = @At(
-            value = "INVOKE",
-            target = "Ljava/util/function/Predicate;test(Ljava/lang/Object;)Z"
-        )
-    )
-    private boolean setValuePredicateTest(final Predicate<String> predicate, final Object value) {
-        if (this.caramelChat$wrapper != null && this.caramelChat$wrapper.valueChanged) {
-            this.caramelChat$cacheCursorPos = this.cursorPos;
-            this.caramelChat$cacheHighlightPos = this.highlightPos;
-            return true;
-        }
-
-        return predicate.test((String) value);
     }
 
     @Inject(
@@ -179,7 +163,7 @@ public abstract class MixinEditBox implements EditBoxController {
         method = "deleteCharsToPos",
         at = @At(
             value = "INVOKE", shift = At.Shift.BEFORE,
-            target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(IZ)V"
+            target = "Lnet/minecraft/client/gui/components/EditBox;onValueChange(Ljava/lang/String;)V"
         )
     )
     private void deleteChars(final int pos, final CallbackInfo ci) {

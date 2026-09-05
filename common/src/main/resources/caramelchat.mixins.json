@@ -8,13 +8,11 @@
         "MixinChatScreen",
         "MixinCreativeModeInventoryScreen",
         "MixinEditBox",
-        "MixinMinecraft",
+        "MixinGui",
         "MixinMultiLineEditBox",
         "MixinRecipeBookComponent",
         "MixinSelectWorldScreen",
         "MixinSignEditScreen",
-        "emi.MixinPluginEmiPort",
-        "emi.MixinPluginEmiSearchWidget",
         "xaeromap.MixinPluginXaeroMapWayPoint"
     ]
 }
