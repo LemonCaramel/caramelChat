@@ -7,11 +7,12 @@ import moe.caramel.chat.wrapper.AbstractIMEWrapper;
 import moe.caramel.chat.wrapper.WrapperSignEditScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
 import net.minecraft.client.input.KeyEvent;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -77,13 +78,13 @@ public final class MixinSignEditScreen implements ScreenController {
         return result;
     }
 
-    @Inject(method = "renderSignText", at = @At("HEAD"))
-    private void captureRenderLine(final GuiGraphics instance, final CallbackInfo ci) {
+    @Inject(method = "extractSignText", at = @At("HEAD"))
+    private void captureRenderLine(final GuiGraphicsExtractor graphics, final Vector2f cursorPosOutput, final CallbackInfo ci) {
         this.caramelChat$currentRenderLine = -1;
     }
 
     @Redirect(
-        method = "renderSignText",
+        method = "extractSignText",
         at = @At(
             value = "INVOKE",
             target = "Ljava/lang/String;substring(II)Ljava/lang/String;"
@@ -94,15 +95,15 @@ public final class MixinSignEditScreen implements ScreenController {
         return value.substring(beginIndex, Math.min(value.length(), endIndex));
     }
 
-    @WrapOperation(
-        method = "renderSignText",
+     @WrapOperation(
+        method = "extractSignText",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)V",
+            target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)V",
             ordinal = 0
         )
     )
-    private void renderCaret(final GuiGraphics instance, final Font font, final String text, final int x, final int y, final int color, final boolean dropShadow, final Operation<Integer> original) {
+    private void renderCaret(final GuiGraphicsExtractor instance, final Font font, final String text, final int x, final int y, final int color, final boolean dropShadow, final Operation<Integer> original) {
         this.caramelChat$currentRenderLine++;
 
         // Check IME Status
